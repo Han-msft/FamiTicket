@@ -1,4 +1,4 @@
-var autoPurchase = function(retry_interval, ticket_count) {
+var autoPurchase = function(retry_interval, date, time, ticket_count) {
 //page 1
 var firstSubmit = submitData;
 submitData(window.location.search.substr(6), '');
@@ -8,12 +8,22 @@ $(document).ajaxComplete(function() {
 	if (page2_done) return;
 	console.log('page 2 callback');
 	
-	$("#game_page").find('td').each(function(td, obj) {
-		if (obj.onclick) {
-			obj.onclick();
-			page2_done = true;
-			return false;
+	$("#game_page").find('td').each(function(td, el) {
+		if (!el.onclick) {
+			return true;
 		}
+		
+		if (date && el.parentNode.firstChild.innerHTML.search(date) < 0) {
+			return true;	
+		}
+		
+		if (time && el.parentNode.children[1].innerHTML.search(time) < 0) {
+			return true;	
+		}
+		
+		el.onclick();
+		page2_done = true;
+		return false;
 	});
 
 	if (!page2_done) {
@@ -38,7 +48,7 @@ $(document).ajaxComplete(function() {
 
 		$(document).ajaxComplete(function() {
 			console.log('page 4 callback');
-			$("#game_page").find('select')[0].value = ticket_count;
+			$("#game_page").find('select')[0].value = ticket_count || 1;
 			$("#game_page").find('select')[0].onchange();
 			$("#game_page").find('a')[1].onclick();
 		});
@@ -46,4 +56,9 @@ $(document).ajaxComplete(function() {
 });
 }; 
 
-autoPurchase(1000, 1);
+//first date, first seat, one ticket
+autoPurchase(1000);
+//select date, no time, 2 ticket
+//autoPurchase(1000, '4/07', '', 2)
+
+
