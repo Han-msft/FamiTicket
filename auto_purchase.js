@@ -1,4 +1,4 @@
-(function() {
+var autoPurchase = function(retry_interval, ticket_count) {
 //page 1
 var firstSubmit = submitData;
 submitData(window.location.search.substr(6), '');
@@ -20,7 +20,7 @@ $(document).ajaxComplete(function() {
 		window.setTimeout (function() {
 			firstSubmit(window.location.search.substr(6), '');
 			console.log('retry');
-		}, 1000);
+		}, retry_interval);
 		return;
 	}
 
@@ -38,10 +38,12 @@ $(document).ajaxComplete(function() {
 
 		$(document).ajaxComplete(function() {
 			console.log('page 4 callback');
-			$("#game_page").find('select')[0].value = 1;
+			$("#game_page").find('select')[0].value = ticket_count;
 			$("#game_page").find('select')[0].onchange();
-			//$("#game_page").find('a')[1].onclick();
+			$("#game_page").find('a')[1].onclick();
 		});
 	});
 });
-})(); 
+}; 
+
+autoPurchase(1000, 1);
