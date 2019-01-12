@@ -45,6 +45,14 @@ $(document).ajaxComplete(function() {
 				return false;
 			}
 		});
+		
+		if (!page3_done) {
+			window.setTimeout (function() {
+				firstSubmit(window.location.search.substr(6), '');
+				console.log('retry');
+			}, retry_interval || 1000);
+			return;
+		}
 
 		$(document).ajaxComplete(function() {
 			console.log('page 4 callback');
