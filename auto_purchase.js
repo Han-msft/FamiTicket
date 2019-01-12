@@ -30,7 +30,7 @@ $(document).ajaxComplete(function() {
 		window.setTimeout (function() {
 			firstSubmit(window.location.search.substr(6), '');
 			console.log('retry');
-		}, retry_interval);
+		}, retry_interval || 1000);
 		return;
 	}
 
